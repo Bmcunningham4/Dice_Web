@@ -28,23 +28,32 @@ h1 {
 /*? Dice images */
 .dice-container {
     display: flex;
-    flex-direction: column;  /* Stack items vertically */
-    align-items: center;  /* Center items horizontally */
-    justify-content: center;  /* Center items vertically */
-    /* height: 100vh;  Full screen height */
+    flex-wrap: wrap; /* Allows wrapping */
+    justify-content: center; /* Centers dice horizontally */
+    align-items: center; /* Centers dice vertically */
+    gap: 20px; /* Space between dice */
+    max-width: 90vw; /* Prevents dice from stretching too far */
+    margin: auto; /* Centers the whole container */
   }
   
   .dice-image {
-    width: 20rem;
-    height: 20rem;
-    margin-bottom: 10px;  /* Space between dice and button */
+    width: 15rem;
+    height: 15rem;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+  }
+
+  .dice-image:active {
+    transform: scale(0.9); /* Slight press animation */
   }
   
   .roll-button {
+    margin-top: 20px;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
   }
+
 
 /*? My attempt at doing -+ buttons... */
 .dice-image {

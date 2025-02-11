@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import './App.css'
-import Header from './header.jsx';
+import { useState } from "react";
+import "./App.css";
+import Header from "./header.jsx";
+import DiceRoller from "./dice.jsx";
 
-import DiceRoller  from "./dice.jsx";
 import dice_1 from "./assets/dice_1.svg.png";
 import dice_2 from "./assets/dice_2.svg.png";
 import dice_3 from "./assets/dice_3.svg.png";
@@ -12,23 +12,91 @@ import dice_6 from "./assets/dice_6.svg.png";
 
 const diceImages = [dice_1, dice_2, dice_3, dice_4, dice_5, dice_6];
 
+// Create a mapping of images to numbers
+const diceValues = {
+  [dice_1]: 1,
+  [dice_2]: 2,
+  [dice_3]: 3,
+  [dice_4]: 4,
+  [dice_5]: 5,
+  [dice_6]: 6,
+};
 
 function App() {
+  const [numDice, setNumDice] = useState(1);
+  const [currentDice, setCurrentDice] = useState(Array(numDice).fill(dice_1));
+  const [rolling, setRolling] = useState(false);
+  const [total, setTotal] = useState(1); // Store the total sum of dice
+
+  const increaseDice = () => {
+    if (numDice < 5) {
+      setNumDice(numDice + 1);
+      setCurrentDice((prev) => [...prev, dice_1]);
+      setTotal((prevTotal) => prevTotal + 1); // Add default dice value (1)
+    }
+  };
+
+  const decreaseDice = () => {
+    if (numDice > 1) {
+      setNumDice(numDice - 1);
+      setCurrentDice((prev) => prev.slice(0, -1));
+      setTotal((prevTotal) => prevTotal - diceValues[prev[prev.length - 1]]); // Subtract last dice value
+    }
+  };
+
+  const rollAllDice = () => {
+    if (rolling) return;
+    setRolling(true);
+
+    let count = 0;
+    const interval = setInterval(() => {
+      const newDice = currentDice.map(() => diceImages[Math.floor(Math.random() * diceImages.length)]);
+      setCurrentDice(newDice);
+
+      count++;
+      if (count === 50) {
+        clearInterval(interval);
+        setRolling(false);
+
+        // Calculate total sum after final roll
+        const newTotal = newDice.reduce((sum, dice) => sum + diceValues[dice], 0);
+        setTotal(newTotal);
+      }
+    }, 40);
+  };
 
   return (
     <div>
-    <Header/>
-    <div className="dice-gang">
-      <button className="diff-buttons">-</button>
+      <Header />
+      <div className="dice-gang">
+        <button className="diff-buttons" onClick={decreaseDice}>-</button>
 
-    <DiceRoller className="dice-image" diceImages={diceImages} />
-    
+        <div className="dice-container">
+          {currentDice.map((dice, index) => (
+            <img
+              key={index}
+              src={dice}
+              alt="Dice"
+              className="dice-image"
+              onClick={rollAllDice}
+              style={{ cursor: rolling ? "not-allowed" : "pointer" }}
+            />
+          ))}
+        </div>
 
-      <button className="diff-buttons">+</button>
+        <button className="diff-buttons" onClick={increaseDice}>+</button>
+      </div>
+
+      <button onClick={rollAllDice} disabled={rolling} className="roll-button">
+        Roll Dice
+      </button>
+
+      {/* Display the total value below the dice */}
+      <h2>Total: {total}</h2>
     </div>
-
-     </div>
   );
 }
 
-export default App
+export default App;
+
+
