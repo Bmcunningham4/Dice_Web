@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import "./phone.css";
 import Header from "./header.jsx";
 import DiceRoller from "./dice.jsx";
 
@@ -30,6 +31,14 @@ function App() {
   const [rolling, setRolling] = useState(false);
   const [total, setTotal] = useState(1); // Store the total sum of dice
 
+  // Function to calculate dice size based on numDice
+  const getDiceSize = (count) => {
+    if (count < 2) return '13em';  // Large dice for small counts
+    if (count <= 4) return '7rem';  // Medium dice
+    if (count <= 6) return '3rem';  // Medium dice
+    return '3rem';  // Small dice for large count
+  };
+
   const increaseDice = () => {
     if (numDice < 5) {
       setNumDice(numDice + 1);
@@ -41,8 +50,12 @@ function App() {
   const decreaseDice = () => {
     if (numDice > 1) {
       setNumDice(numDice - 1);
-      setCurrentDice((prev) => prev.slice(0, -1));
-      setTotal((prevTotal) => prevTotal - diceValues[prev[prev.length - 1]]); // Subtract last dice value
+  
+      setCurrentDice((prev) => {
+        const newDice = prev.slice(0, -1);
+        setTotal((prevTotal) => prevTotal - diceValues[prev[prev.length - 1]]); // Correctly subtract last dice value
+        return newDice;
+      });
     }
   };
 
@@ -81,7 +94,11 @@ function App() {
               alt="Dice"
               className="dice-image"
               onClick={rollAllDice}
-              style={{ cursor: rolling ? "not-allowed" : "pointer" }}
+              style={{
+                cursor: rolling ? "not-allowed" : "pointer",
+                width: getDiceSize(numDice),  // Dynamically set the width
+                height: getDiceSize(numDice),  // Dynamically set the height
+              }}
             />
           ))}
         </div>
@@ -90,26 +107,22 @@ function App() {
       </div>
   
       <div className="total-container">
-  {/* Roll button */}
-  <button onClick={rollAllDice} disabled={rolling} className="roll-button">
-    Roll Dice
-  </button>
-  {/* Display the total value */}
-  <h2>Total: {total}</h2>
+        {/* Roll button */}
+        <button onClick={rollAllDice} disabled={rolling} className="roll-button">
+          Roll Dice
+        </button>
+        {/* Display the total value */}
+        <h2>Total: {total}</h2>
 
-  {/* Display Goggins image if total is 6, otherwise show ☀️🌈 */}
-  {total === 6 ? (
-    <img src={goggins1} alt="Goggins" className="goggins-image" />
-  ) : (
-    <span className="emoji-display">☀️🌈☀️🌈☀️🌈☀️🌈</span>
-  )}
-</div>
-
+        {/* Display Goggins image if total is 6, otherwise show ☀️🌈 */}
+        {total === 6 ? (
+          <img src={goggins1} alt="Goggins" className="goggins-image" />
+        ) : (
+          <span className="emoji-display">☀️🌈☀️🌈☀️🌈</span>
+        )}
+      </div>
     </div>
   );
-  
 }
 
 export default App;
-
-
