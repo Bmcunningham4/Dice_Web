@@ -9,6 +9,8 @@ import dice_3 from "./assets/dice_3.svg.png";
 import dice_4 from "./assets/dice_4.svg.png";
 import dice_5 from "./assets/dice_5.svg.png";
 import dice_6 from "./assets/dice_6.svg.png";
+import goggins1 from "./assets/goggins.webp";
+import goggins2 from "./assets/goggins.jpg";
 
 const diceImages = [dice_1, dice_2, dice_3, dice_4, dice_5, dice_6];
 
@@ -70,7 +72,7 @@ function App() {
       <Header />
       <div className="dice-gang">
         <button className="diff-buttons" onClick={decreaseDice}>-</button>
-
+  
         <div className="dice-container">
           {currentDice.map((dice, index) => (
             <img
@@ -83,18 +85,29 @@ function App() {
             />
           ))}
         </div>
-
+  
         <button className="diff-buttons" onClick={increaseDice}>+</button>
       </div>
+  
+      <div className="total-container">
+  {/* Roll button */}
+  <button onClick={rollAllDice} disabled={rolling} className="roll-button">
+    Roll Dice
+  </button>
+  {/* Display the total value */}
+  <h2>Total: {total}</h2>
 
-      <button onClick={rollAllDice} disabled={rolling} className="roll-button">
-        Roll Dice
-      </button>
+  {/* Display Goggins image if total is 6, otherwise show ☀️🌈 */}
+  {total === 6 ? (
+    <img src={goggins1} alt="Goggins" className="goggins-image" />
+  ) : (
+    <span className="emoji-display">☀️🌈☀️🌈☀️🌈☀️🌈</span>
+  )}
+</div>
 
-      {/* Display the total value below the dice */}
-      <h2>Total: {total}</h2>
     </div>
   );
+  
 }
 
 export default App;

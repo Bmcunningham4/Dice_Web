@@ -73,6 +73,26 @@ h1 {
 
 }   
   
+/* Center align the total, roll button, and conditional content */
+.total-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers everything horizontally */
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.roll-button {
+  margin: 10px 0;
+}
+
+/* Make sure Goggins image and emojis are centered */
+.goggins-image, .emoji-display {
+  display: block;
+  margin: 10px auto;
+}
+
+
 
 /* Default Crap.. */
 :root {
