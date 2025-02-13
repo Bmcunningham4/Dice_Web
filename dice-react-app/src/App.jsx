@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import "./phone.css";
+import "./phone2.css?v=2.0";
 import Header from "./header.jsx";
 import DiceRoller from "./dice.jsx";
 
